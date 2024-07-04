@@ -30,4 +30,18 @@ const registerValidate = () => {
   ];
 };
 
-export { registerValidate };
+const loginValite = () => {
+  return [
+    body("email")
+      .isString()
+      .withMessage("O e-mail é obrigatório.")
+      .isEmail()
+      .withMessage("Insira um e-mail valido."),
+    body("password")
+      .isString()
+      .withMessage("A senha é obrigatório.")
+      .isLength({ min: 5 })
+      .withMessage("A senha precisa ter no mínimo 3 caracteres."),
+  ];
+};
+export { registerValidate, loginValite };

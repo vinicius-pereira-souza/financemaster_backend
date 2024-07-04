@@ -1,6 +1,6 @@
 import User from "../models/User";
 import { Request, Response } from "express";
-import { genSaltSync, hashSync } from "bcrypt";
+import { genSaltSync, hashSync, compareSync } from "bcrypt";
 import { createUserToken } from "../utils/createUserToken";
 
 const register = async (req: Request, res: Response) => {
@@ -43,4 +43,67 @@ const register = async (req: Request, res: Response) => {
   }
 };
 
-export { register };
+const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  // if check user exist
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(422).json({ errors: ["Usuário não encontrado."] });
+  }
+
+  // compare if password match
+  const checkPassword = compareSync(password, user.password);
+
+  if (!checkPassword) {
+    return res.status(422).json({ errors: ["Senha Inválida."] });
+  }
+
+  try {
+    const token = createUserToken(user._id);
+
+    return res.status(200).json({ _id: user._id, token });
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
+  }
+};
+
+const getCurrentUser = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  try {
+    return res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
+  }
+};
+
+const getUserById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const user = await User.findById(id).select("-password").exec();
+
+  // check if user exists
+  if (!user) {
+    return res.status(404).json({ errors: ["Usuário não encontrado."] });
+  }
+
+  try {
+    return res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
+  }
+};
+
+export { register, login, getCurrentUser, getUserById };
