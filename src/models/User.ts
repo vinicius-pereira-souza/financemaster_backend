@@ -19,10 +19,9 @@ const userSchema = new Schema(
     },
     imageProfile: {
       type: String,
-      required: true,
     },
     currentBalance: {
-      type: String,
+      type: Number,
     },
     transactions: [
       {

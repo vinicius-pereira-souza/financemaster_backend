@@ -5,8 +5,8 @@ const db_uri = config.get<string>("db_uri");
 
 async function connect() {
   try {
-    console.log(db_uri);
-    // await mongoose.connect(db_uri);
+    await mongoose.connect(db_uri);
+    console.log("conectado no banco!");
   } catch (err) {
     console.log("err");
   }

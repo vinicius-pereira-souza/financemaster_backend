@@ -10,16 +10,20 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "config": "^3.3.12",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-validator": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/config": "^3.3.4",
     "@types/express": "^4.17.21",
+    "@types/express-validator": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.11",
