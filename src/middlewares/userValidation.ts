@@ -44,4 +44,23 @@ const loginValite = () => {
       .withMessage("A senha precisa ter no mínimo 3 caracteres."),
   ];
 };
-export { registerValidate, loginValite };
+
+const updateValite = () => {
+  return [
+    body("name")
+      .optional()
+      .isString()
+      .isLength({ min: 3 })
+      .withMessage("O nome precisa ter no mínimo 3 caracteres."),
+    body("surname")
+      .optional()
+      .isString()
+      .isLength({ min: 3 })
+      .withMessage("O nome precisa ter no mínimo 3 caracteres."),
+    body("imageProfile").optional().isString(),
+    body("currentBalance")
+      .isNumeric()
+      .withMessage("O valor deve ser um número."),
+  ];
+};
+export { registerValidate, loginValite, updateValite };

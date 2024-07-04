@@ -11,6 +11,8 @@ const checkIsTheSameId = (
       .status(409)
       .json({ errors: ["Usuário invalido para esta operação"] });
   }
+
+  return true;
 };
 
 export default checkIsTheSameId;

@@ -8,7 +8,11 @@ import {
 } from "../controllers/UserController";
 // express validator
 import validate from "../middlewares/handlevalidation";
-import { registerValidate, loginValite } from "../middlewares/userValidation";
+import {
+  registerValidate,
+  loginValite,
+  updateValite,
+} from "../middlewares/userValidation";
 import verifyToken from "../middlewares/verifyToken";
 import { imageUpload } from "../middlewares/uploadImage.";
 
@@ -17,4 +21,11 @@ export default Router()
   .post("/login", loginValite(), validate, login)
   .get("/", verifyToken, getCurrentUser)
   .get("/:id", getUserById)
-  .patch("/:id", verifyToken, imageUpload.single("imageProfile"), update);
+  .patch(
+    "/:id",
+    verifyToken,
+    updateValite(),
+    validate,
+    imageUpload.single("imageProfile"),
+    update,
+  );

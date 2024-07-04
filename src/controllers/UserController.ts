@@ -114,9 +114,7 @@ const update = async (req: Request, res: Response) => {
 
   checkIsTheSameId(id, req.user._id, res);
 
-  let userUpdated = <User>{};
-
-  if()
+  let userUpdated = {};
 };
 
 export { register, login, getCurrentUser, getUserById, update };
