@@ -2,6 +2,7 @@ import User from "../models/User";
 import { Request, Response } from "express";
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
 import { createUserToken } from "../utils/createUserToken";
+import checkIsTheSameId from "../utils/checkIsTheSameId";
 
 const register = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -107,7 +108,15 @@ const getUserById = async (req: Request, res: Response) => {
 };
 
 const update = async (req: Request, res: Response) => {
-  return res.send("atualiza usuário!");
+  const id = req.params.id;
+  const { name, surname, currentBalance } = req.body;
+  const image = req.file;
+
+  checkIsTheSameId(id, req.user._id, res);
+
+  let userUpdated = <User>{};
+
+  if()
 };
 
 export { register, login, getCurrentUser, getUserById, update };
