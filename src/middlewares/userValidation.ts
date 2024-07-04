@@ -56,10 +56,10 @@ const updateValite = () => {
       .optional()
       .isString()
       .isLength({ min: 3 })
-      .withMessage("O nome precisa ter no mínimo 3 caracteres."),
+      .withMessage("O sobrenome precisa ter no mínimo 3 caracteres."),
     body("imageProfile").optional().isString(),
     body("currentBalance")
-      .isNumeric()
+      .isString()
       .withMessage("O valor deve ser um número."),
   ];
 };

@@ -107,6 +107,13 @@ const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+type UpdateUser = {
+  name?: string;
+  surname?: string;
+  currentBalance: number;
+  imageProfile?: string;
+};
+
 const update = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { name, surname, currentBalance } = req.body;
@@ -114,7 +121,36 @@ const update = async (req: Request, res: Response) => {
 
   checkIsTheSameId(id, req.user._id, res);
 
-  let userUpdated = {};
+  let userUpdated = <UpdateUser>{};
+
+  if (name) {
+    userUpdated.name = name;
+  }
+
+  if (surname) {
+    userUpdated.surname = surname;
+  }
+
+  if (image) {
+    userUpdated.imageProfile = image.filename;
+  }
+
+  userUpdated.currentBalance = currentBalance;
+
+  try {
+    const user = await User.findByIdAndUpdate(id, userUpdated, {
+      new: true,
+    })
+      .select("-password")
+      .exec();
+
+    return res.status(200).json(user);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
+  }
 };
 
 export { register, login, getCurrentUser, getUserById, update };

@@ -24,8 +24,8 @@ export default Router()
   .patch(
     "/:id",
     verifyToken,
+    imageUpload.single("imageProfile"),
     updateValite(),
     validate,
-    imageUpload.single("imageProfile"),
     update,
   );
