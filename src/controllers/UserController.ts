@@ -106,4 +106,8 @@ const getUserById = async (req: Request, res: Response) => {
   }
 };
 
-export { register, login, getCurrentUser, getUserById };
+const update = async (req: Request, res: Response) => {
+  return res.send("atualiza usuário!");
+};
+
+export { register, login, getCurrentUser, getUserById, update };
