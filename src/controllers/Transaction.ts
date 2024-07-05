@@ -115,4 +115,14 @@ const deleteTransactions = async (req: Request, res: Response) => {
   }
 };
 
-export { create, getAllTransitions, getTransitionById, deleteTransactions };
+const update = async (req: Request, res: Response) => {
+  return res.send("atualizar");
+};
+
+export {
+  create,
+  getAllTransitions,
+  getTransitionById,
+  deleteTransactions,
+  update,
+};
