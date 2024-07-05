@@ -21,7 +21,10 @@ const userSchema = new Schema(
       type: String,
     },
     currentBalance: {
-      type: String,
+      type: Number,
+    },
+    lastBalance: {
+      type: Number,
     },
     transactions: [
       {
