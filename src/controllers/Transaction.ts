@@ -61,4 +61,24 @@ const getAllTransitions = async (req: Request, res: Response) => {
   }
 };
 
-export { create, getAllTransitions };
+const getTransitionById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const transaction = await Transaction.findById(id).exec();
+
+  if (!transaction) {
+    return res.status(404).json({ errors: ["Transação não encontrada."] });
+  }
+
+  try {
+    return res.status(200).json(transaction);
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
+  }
+};
+
+export { create, getAllTransitions, getTransitionById };
