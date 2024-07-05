@@ -12,9 +12,7 @@ const createValidate = () => {
       .withMessage("A quantia é obrigatório")
       .isLength({ min: 1 })
       .withMessage("A quantia deve ter no mínimo 1 dígito."),
-    body("status")
-      .isString()
-      .withMessage("Insira o status se é de entrada ou saída."),
+    body("status").isString().withMessage("O status é obrigatório."),
     body("date").isDate().withMessage("A data é obrigatório."),
   ];
 };
