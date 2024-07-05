@@ -49,4 +49,16 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-export { create };
+const getAllTransitions = async (req: Request, res: Response) => {
+  const userId = req.user._id;
+
+  const transitions = await Transaction.find({ userId });
+
+  if (transitions.length == 0) {
+    return res.status(204).json([]);
+  } else {
+    return res.status(200).json(transitions);
+  }
+};
+
+export { create, getAllTransitions };
