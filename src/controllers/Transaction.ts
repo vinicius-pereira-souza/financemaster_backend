@@ -115,8 +115,61 @@ const deleteTransactions = async (req: Request, res: Response) => {
   }
 };
 
+type UpdatedTransition = {
+  title?: string;
+  amount?: number | string;
+  status?: "input" | "output";
+  date?: string;
+};
+
 const update = async (req: Request, res: Response) => {
-  return res.send("atualizar");
+  const id = req.params.id;
+  const userId = req.user._id;
+  const { title, amount, status, date } = req.body;
+
+  // check if user exists
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(422).json({ errors: ["Usuário não encontrado."] });
+  }
+
+  // check if transaction exists
+  const transaction = await Transaction.findById(id);
+  if (!transaction) {
+    return res.status(422).json({ errors: ["Transação não encontrado."] });
+  }
+
+  const updatedTransition = <UpdatedTransition>{};
+
+  if (title) {
+    updatedTransition.title = title;
+  }
+  if (amount) {
+    updatedTransition.amount = amount;
+  }
+  if (status) {
+    updatedTransition.status = status;
+  }
+  if (date) {
+    updatedTransition.date = date;
+  }
+
+  try {
+    const newTransition = await Transaction.findByIdAndUpdate(
+      id,
+      updatedTransition,
+      { new: true },
+    );
+    await user.save();
+
+    return res.status(200).json(newTransition);
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
+  }
 };
 
 export {
