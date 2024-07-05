@@ -18,9 +18,9 @@ const create = async (req: Request, res: Response) => {
   // check status value
   if (user.currentBalance || user.currentBalance == 0) {
     if (status === "input") {
-      user.currentBalance += amount;
+      user.currentBalance += Number(amount);
     } else if (status === "output") {
-      user.currentBalance -= amount;
+      user.currentBalance -= Number(amount);
     }
   }
 
@@ -81,4 +81,38 @@ const getTransitionById = async (req: Request, res: Response) => {
   }
 };
 
-export { create, getAllTransitions, getTransitionById };
+const deleteTransactions = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const userId = req.user._id;
+
+  // check if user exists
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(422).json({ errors: ["Usuário não encontrado."] });
+  }
+
+  // check if transaction exists
+  const transaction = await Transaction.findById(id);
+  if (!transaction) {
+    return res.status(422).json({ errors: ["Transação não encontrado."] });
+  }
+
+  user.transactions = user.transactions.filter(
+    (transactionId) => transactionId.toString() !== id.toString(),
+  );
+
+  try {
+    await user.save();
+    await transaction.deleteOne();
+
+    return res.status(200).json({});
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
+  }
+};
+
+export { create, getAllTransitions, getTransitionById, deleteTransactions };
