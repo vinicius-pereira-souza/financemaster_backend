@@ -3,16 +3,29 @@ import User from "../models/User";
 import Transaction from "../models/Transition";
 
 const create = async (req: Request, res: Response) => {
-  const userId = req.user._id;
   const { title, amount, status, date } = req.body;
+  const userId = req.user._id;
 
+  // check if user exists
   const user = await User.findById(userId);
-
   if (!user) {
     return res.status(422).json({ errors: ["Usuário não encontrado."] });
   }
 
-  const newTransaction = new Transaction({
+  // changing the balance value to the most recent value before changing to the new value
+  user.lastBalance = user.currentBalance;
+
+  // check status value
+  if (user.currentBalance || user.currentBalance == 0) {
+    if (status === "input") {
+      user.currentBalance += amount;
+    } else if (status === "output") {
+      user.currentBalance -= amount;
+    }
+  }
+
+  // create new document
+  const createTransition = new Transaction({
     userId: user._id,
     title,
     amount,
@@ -20,22 +33,13 @@ const create = async (req: Request, res: Response) => {
     date,
   });
 
-  if (user.currentBalance) {
-    if (status === "output") {
-      user.currentBalance = user.currentBalance - amount;
-    } else if (status === "input") {
-      user.currentBalance = user.currentBalance + amount;
-    }
-  }
-
-  user.lastBalance = user.currentBalance;
-  user.transactions.push(newTransaction._id);
-
   try {
-    await newTransaction.save();
+    user.transactions.push(createTransition._id);
+
+    await createTransition.save();
     await user.save();
 
-    return res.status(201).json(newTransaction);
+    return res.status(201).json(createTransition);
   } catch (err) {
     console.log(err);
 

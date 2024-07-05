@@ -120,7 +120,11 @@ const update = async (req: Request, res: Response) => {
   const { name, surname, currentBalance } = req.body;
   const image = req.file;
 
-  checkIsTheSameId(id, req.user._id, res);
+  if (checkIsTheSameId(id, req.user._id)) {
+    return res
+      .status(409)
+      .json({ errors: ["Usuário invalido para esta operação"] });
+  }
 
   let userUpdated = <UpdateUser>{};
 
