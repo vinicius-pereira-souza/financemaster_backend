@@ -128,7 +128,7 @@ const update = async (req: Request, res: Response) => {
   const { title, amount, status, date } = req.body;
 
   // check if user exists
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).select("-password");
   if (!user) {
     return res.status(422).json({ errors: ["Usuário não encontrado."] });
   }
@@ -137,6 +137,22 @@ const update = async (req: Request, res: Response) => {
   const transaction = await Transaction.findById(id);
   if (!transaction) {
     return res.status(422).json({ errors: ["Transação não encontrado."] });
+  }
+
+  if (user.currentBalance) {
+    user.lastBalance = user.currentBalance;
+
+    if (transaction.status === "output") {
+      user.currentBalance += transaction.amount;
+    } else if (transaction.status === "input") {
+      user.currentBalance -= transaction.amount;
+    }
+
+    if (status === "output") {
+      user.currentBalance -= amount;
+    } else if (status === "input") {
+      user.currentBalance += amount;
+    }
   }
 
   const updatedTransition = <UpdatedTransition>{};
