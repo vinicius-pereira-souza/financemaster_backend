@@ -12,11 +12,28 @@ const createValidate = () => {
       .withMessage("A quantia é obrigatório")
       .isLength({ min: 1 })
       .withMessage("A quantia deve ter no mínimo 1 dígito."),
-    body("status")
-      .isString()
-      .withMessage("Insira o status se é de entrada ou saída."),
+    body("status").isString().withMessage("O status é obrigatório."),
     body("date").isDate().withMessage("A data é obrigatório."),
   ];
 };
 
-export { createValidate };
+const updateValidate = () => {
+  return [
+    body("title")
+      .optional()
+      .isString()
+      .withMessage("O titulo é obrigatório.")
+      .isLength({ min: 3 })
+      .withMessage("O nome precisa ter no mínimo 3 caracteres."),
+    body("amount")
+      .optional()
+      .isNumeric()
+      .withMessage("A quantia é obrigatório")
+      .isLength({ min: 1 })
+      .withMessage("A quantia deve ter no mínimo 1 dígito."),
+    body("status").optional().isString().withMessage("O status é obrigatório."),
+    body("date").optional().isDate().withMessage("A data é obrigatório."),
+  ];
+};
+
+export { createValidate, updateValidate };
