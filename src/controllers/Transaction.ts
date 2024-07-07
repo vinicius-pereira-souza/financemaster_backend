@@ -12,15 +12,14 @@ const create = async (req: Request, res: Response) => {
     return res.status(422).json({ errors: ["Usuário não encontrado."] });
   }
 
-  // changing the balance value to the most recent value before changing to the new value
-  user.lastBalance = user.currentBalance;
-
   // check status value
   if (user.currentBalance || user.currentBalance == 0) {
     if (status === "input") {
       user.currentBalance += Number(amount);
+      user.lastBalanceEntry += Number(amount);
     } else if (status === "output") {
       user.currentBalance -= Number(amount);
+      user.lastBalanceExit -= Number(amount);
     }
   }
 
@@ -140,18 +139,20 @@ const update = async (req: Request, res: Response) => {
   }
 
   if (user.currentBalance) {
-    user.lastBalance = user.currentBalance;
-
     if (transaction.status === "output") {
       user.currentBalance += transaction.amount;
+      user.lastBalanceExit -= transaction.amount;
     } else if (transaction.status === "input") {
       user.currentBalance -= transaction.amount;
+      user.lastBalanceEntry -= transaction.amount;
     }
 
     if (status === "output") {
       user.currentBalance -= amount;
+      user.lastBalanceExit += amount;
     } else if (status === "input") {
       user.currentBalance += amount;
+      user.lastBalanceEntry += amount;
     }
   }
 
