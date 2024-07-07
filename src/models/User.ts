@@ -23,7 +23,10 @@ const userSchema = new Schema(
     currentBalance: {
       type: Number,
     },
-    lastBalance: {
+    lastBalanceExit: {
+      type: Number,
+    },
+    lastBalanceEntry: {
       type: Number,
     },
     transactions: [
