@@ -19,7 +19,7 @@ const create = async (req: Request, res: Response) => {
       user.lastBalanceEntry += Number(amount);
     } else if (status === "output") {
       user.currentBalance -= Number(amount);
-      user.lastBalanceExit -= Number(amount);
+      user.lastBalanceExit += Number(amount);
     }
   }
 
