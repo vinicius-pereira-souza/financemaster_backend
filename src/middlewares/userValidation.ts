@@ -59,6 +59,7 @@ const updateValite = () => {
       .withMessage("O sobrenome precisa ter no mínimo 3 caracteres."),
     body("imageProfile").optional().isString(),
     body("currentBalance")
+      .optional()
       .isNumeric()
       .withMessage("O valor deve ser um número."),
   ];

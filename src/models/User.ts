@@ -19,12 +19,19 @@ const userSchema = new Schema(
     },
     imageProfile: {
       type: String,
+      default: "",
     },
     currentBalance: {
       type: Number,
+      default: 0,
     },
-    lastBalance: {
+    lastBalanceExit: {
       type: Number,
+      default: 0,
+    },
+    lastBalanceEntry: {
+      type: Number,
+      default: 0,
     },
     transactions: [
       {
