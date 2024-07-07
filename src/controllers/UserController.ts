@@ -24,11 +24,6 @@ const register = async (req: Request, res: Response) => {
     name,
     email,
     password: passwordHash,
-    surname: "",
-    imageProfile: "",
-    currentBalance: 0,
-    lastBalance: 0,
-    transactions: [],
   });
 
   try {
