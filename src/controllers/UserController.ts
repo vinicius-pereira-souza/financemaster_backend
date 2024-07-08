@@ -107,12 +107,15 @@ type UpdateUser = {
   name?: string;
   surname?: string;
   currentBalance: number;
+  lastBalanceEntry: number;
+  lastBalanceExit: number;
   imageProfile?: string;
 };
 
 const update = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { name, surname, currentBalance } = req.body;
+  const { name, surname, currentBalance, lastBalanceEntry, lastBalanceExit } =
+    req.body;
   const image = req.file;
 
   if (checkIsTheSameId(id, req.user._id)) {
@@ -137,6 +140,12 @@ const update = async (req: Request, res: Response) => {
 
   userUpdated.currentBalance = currentBalance;
 
+  if (lastBalanceEntry) {
+    userUpdated.lastBalanceEntry = lastBalanceEntry;
+  }
+  if (lastBalanceExit) {
+    userUpdated.lastBalanceExit = lastBalanceExit;
+  }
   try {
     const user = await User.findByIdAndUpdate(id, userUpdated, {
       new: true,
