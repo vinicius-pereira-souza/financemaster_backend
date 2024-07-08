@@ -189,10 +189,35 @@ const update = async (req: Request, res: Response) => {
   }
 };
 
+const deleteAll = async (req: Request, res: Response) => {
+  const userId = req.user._id;
+
+  // check if user exists
+  const user = await User.findById(userId).select("-password");
+  if (!user) {
+    return res.status(422).json({ errors: ["Usuário não encontrado."] });
+  }
+
+  user.transactions = [];
+
+  try {
+    await Transaction.deleteMany({ userId: user._id });
+
+    return res.status(200).json([]);
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({
+      errors: ["Houve um erro, por favor tente novamente mais tarde."],
+    });
+  }
+};
+
 export {
   create,
   getAllTransitions,
   getTransitionById,
   deleteTransactions,
   update,
+  deleteAll,
 };
