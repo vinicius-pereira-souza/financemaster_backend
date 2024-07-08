@@ -5,6 +5,7 @@ import {
   getTransitionById,
   deleteTransactions,
   update,
+  deleteAll,
 } from "../controllers/Transaction";
 import {
   createValidate,
@@ -17,4 +18,5 @@ export default Router()
   .get("/", getAllTransitions)
   .get("/:id", getTransitionById)
   .delete("/:id", deleteTransactions)
-  .patch("/:id", updateValidate(), validate, update);
+  .patch("/:id", updateValidate(), validate, update)
+  .delete("/", deleteAll);
