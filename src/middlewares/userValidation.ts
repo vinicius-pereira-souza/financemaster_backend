@@ -62,6 +62,14 @@ const updateValite = () => {
       .optional()
       .isNumeric()
       .withMessage("O valor deve ser um número."),
+    body("lastBalanceEntry")
+      .optional()
+      .isNumeric()
+      .withMessage("O valor deve ser um número."),
+    body("lastBalanceExit")
+      .optional()
+      .isNumeric()
+      .withMessage("O valor deve ser um número."),
   ];
 };
 export { registerValidate, loginValite, updateValite };
