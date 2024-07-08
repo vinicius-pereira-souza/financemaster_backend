@@ -202,7 +202,7 @@ const deleteAll = async (req: Request, res: Response) => {
 
   try {
     await Transaction.deleteMany({ userId: user._id });
-
+    await user.save();
     return res.status(200).json([]);
   } catch (err) {
     console.log(err);
