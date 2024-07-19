@@ -11,7 +11,7 @@ import {
   createValidate,
   updateValidate,
 } from "../middlewares/transactionValidation";
-import validate from "../middlewares/handlevalidation";
+import validate from "../middlewares/handlerErrors";
 
 export default Router()
   .post("/", createValidate(), validate, create)
