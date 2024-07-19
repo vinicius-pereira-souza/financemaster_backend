@@ -52,11 +52,6 @@ const updateValite = () => {
       .isString()
       .isLength({ min: 3 })
       .withMessage("O nome precisa ter no mínimo 3 caracteres."),
-    body("surname")
-      .optional()
-      .isString()
-      .isLength({ min: 3 })
-      .withMessage("O sobrenome precisa ter no mínimo 3 caracteres."),
     body("imageProfile").optional().isString(),
     body("currentBalance")
       .optional()

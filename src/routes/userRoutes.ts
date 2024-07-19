@@ -7,7 +7,7 @@ import {
   update,
 } from "../controllers/UserController";
 // express validator
-import validate from "../middlewares/handlevalidation";
+import handlerErrors from "../middlewares/handlerErrors";
 import {
   registerValidate,
   loginValite,
@@ -17,8 +17,8 @@ import verifyToken from "../middlewares/verifyToken";
 import { imageUpload } from "../middlewares/uploadImage.";
 
 export default Router()
-  .post("/register", registerValidate(), validate, register)
-  .post("/login", loginValite(), validate, login)
+  .post("/register", registerValidate(), handlerErrors, register)
+  .post("/login", loginValite(), handlerErrors, login)
   .get("/", verifyToken, getCurrentUser)
   .get("/:id", getUserById)
   .patch(
@@ -26,6 +26,6 @@ export default Router()
     verifyToken,
     imageUpload.single("imageProfile"),
     updateValite(),
-    validate,
+    handlerErrors,
     update,
   );

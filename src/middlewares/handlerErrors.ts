@@ -1,7 +1,7 @@
 import { validationResult, Result } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 
-export default function validate(
+export default function handlerErrors(
   req: Request,
   res: Response,
   next: NextFunction,

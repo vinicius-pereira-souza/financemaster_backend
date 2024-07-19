@@ -1,7 +1,7 @@
 import User from "../models/User";
 import { Request, Response } from "express";
 import { genSaltSync, hashSync, compareSync } from "bcrypt";
-import { createUserToken } from "../utils/createUserToken";
+import createToken from "../utils/createToken";
 import checkIsTheSameId from "../utils/checkIsTheSameId";
 
 const register = async (req: Request, res: Response) => {
@@ -28,7 +28,7 @@ const register = async (req: Request, res: Response) => {
 
   try {
     await createUser.save();
-    const token = createUserToken(createUser._id);
+    const token = createToken(createUser._id);
 
     return res.status(201).json({ _id: createUser._id, token });
   } catch (err) {
@@ -58,7 +58,7 @@ const login = async (req: Request, res: Response) => {
   }
 
   try {
-    const token = createUserToken(user._id);
+    const token = createToken(user._id);
 
     return res.status(200).json({ _id: user._id, token });
   } catch (err) {
@@ -77,6 +77,7 @@ const getCurrentUser = async (req: Request, res: Response) => {
     return res.status(200).json(user);
   } catch (err) {
     console.log(err);
+
     return res.status(500).json({
       errors: ["Houve um erro, por favor tente novamente mais tarde."],
     });
@@ -97,6 +98,7 @@ const getUserById = async (req: Request, res: Response) => {
     return res.status(200).json(user);
   } catch (err) {
     console.log(err);
+
     return res.status(500).json({
       errors: ["Houve um erro, por favor tente novamente mais tarde."],
     });
@@ -105,7 +107,6 @@ const getUserById = async (req: Request, res: Response) => {
 
 type UpdateUser = {
   name?: string;
-  surname?: string;
   currentBalance: number;
   lastBalanceEntry: number;
   lastBalanceExit: number;
@@ -114,8 +115,7 @@ type UpdateUser = {
 
 const update = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { name, surname, currentBalance, lastBalanceEntry, lastBalanceExit } =
-    req.body;
+  const { name, currentBalance, lastBalanceEntry, lastBalanceExit } = req.body;
   const image = req.file;
 
   if (checkIsTheSameId(id, req.user._id)) {
@@ -128,10 +128,6 @@ const update = async (req: Request, res: Response) => {
 
   if (name) {
     userUpdated.name = name;
-  }
-
-  if (surname) {
-    userUpdated.surname = surname;
   }
 
   if (image) {
